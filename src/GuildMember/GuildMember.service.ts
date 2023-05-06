@@ -5,33 +5,33 @@ import { GuildMember } from '@prisma/client';
 @Injectable()
 export class GuildMemberService {
   constructor(private readonly databaseService: DatabaseService) {}
-  create(data: GuildMember): Promise<GuildMember> {
+  async create(data: GuildMember): Promise<GuildMember> {
     return this.databaseService.guildMember.create({ data });
   }
 
-  findAll() {
+  async findAll() {
     return this.databaseService.guildMember.findMany();
   }
 
-  findById(id: number) {
+  async findById(id: number) {
     return this.databaseService.guildMember.findUnique({
       where: { id },
     });
   }
 
-  findByDiscordId(discordId: string) {
+  async findByDiscordId(discordId: string) {
     return this.databaseService.guildMember.findUnique({
       where: { discordId },
     });
   }
 
-  findByUsername(username: string) {
+  async findByUsername(username: string) {
     return this.databaseService.guildMember.findUnique({
       where: { username },
     });
   }
 
-  update(guildMember: GuildMember) {
+  async update(guildMember: GuildMember) {
     const { id, ...data } = guildMember;
     return this.databaseService.guildMember.update({
       data,
@@ -39,7 +39,17 @@ export class GuildMemberService {
     });
   }
 
-  delete({ id }: GuildMember) {
+  async delete({ id }: GuildMember) {
     return this.databaseService.guildMember.delete({ where: { id } });
+  }
+
+  async findOrCreate(guildMember: GuildMember) {
+    const findUser = await this.findById(guildMember.id);
+
+    if (!!findUser) {
+      return findUser;
+    } else {
+      return this.create(guildMember);
+    }
   }
 }
