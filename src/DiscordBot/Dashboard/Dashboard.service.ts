@@ -1,12 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { TextChannel } from 'discord.js';
 import ChannelWiper from './ChannelWiper';
+import { Issue, User } from 'src/Util/entities';
+import { EmbedGeneratorService } from './IssueMessenger/EmbedGenerator.service';
 
 @Injectable()
 export class DashboardService {
-  public async generator(channel: TextChannel) {
+  constructor(private readonly embedGeneratorService: EmbedGeneratorService) {}
+  public async generator(
+    channel: TextChannel,
+    issues: Issue[],
+    developers: User[],
+  ) {
     await ChannelWiper(channel);
 
-    channel.send({ content: 'teste' });
+    issues.forEach(async (issue) =>
+      channel.send({
+        embeds: [
+          await this.embedGeneratorService.DashboardEmbedIssue(
+            issue,
+            developers,
+          ),
+        ],
+      }),
+    );
   }
 }

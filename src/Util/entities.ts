@@ -20,6 +20,7 @@ export interface User {
   following_count: number;
   starred_repos_count: number;
   username: string;
+  discordId?: string;
 }
 
 export interface Label {

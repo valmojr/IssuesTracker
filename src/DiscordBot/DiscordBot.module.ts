@@ -7,6 +7,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { GuildMemberService } from 'src/GuildMember/GuildMember.service';
 import { DatabaseService } from 'src/Database/Database.service';
 import { IssueService } from './issues/Issue.service';
+import { EmbedGeneratorService } from './Dashboard/IssueMessenger/EmbedGenerator.service';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { IssueService } from './issues/Issue.service';
     GuildMemberService,
     DatabaseService,
     IssueService,
+    EmbedGeneratorService,
   ],
 })
 export class DiscordBotModule {}

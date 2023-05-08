@@ -34,7 +34,12 @@ export class DiscordBotService {
         this.logger.log(
           `refreshing dashboard on ${guild.name} - ${dashboardChannel.name}`,
         );
-        this.dashboardService.generator(dashboardChannel);
+
+        const issues = await this.issueService.fetchOpenIssues();
+
+        const developers = await this.issueService.fetchDevelopers();
+
+        this.dashboardService.generator(dashboardChannel, issues, developers);
       },
     );
     new CronService(
@@ -43,36 +48,14 @@ export class DiscordBotService {
         this.logger.log(
           `refreshing dashboard on ${guild.name} - ${dashboardChannel.name}`,
         );
-        this.dashboardService.generator(dashboardChannel);
+
+        const issues = await this.issueService.fetchOpenIssues();
+
+        const developers = await this.issueService.fetchDevelopers();
+
+        this.dashboardService.generator(dashboardChannel, issues, developers);
       },
     );
-
-    new CronService('0 * * * * *', async () => {
-      this.logger.warn(`fetching issues`);
-      const issues = await this.issueService.fetchOpenIssues();
-
-      issues.forEach((issue) => {
-        this.logger.log(issue.title);
-      });
-
-      this.logger.warn(`fetching users`);
-
-      const developers = await this.issueService.fetchDevelopers();
-
-      developers.forEach(async (developer) => {
-        const { id, username } = developer;
-
-        this.logger.log(username);
-
-        await this.guildMemberService.findOrCreate({
-          id,
-          username,
-          discordId: null,
-        });
-      });
-    });
-
-    console.log(await this.guildMemberService.findAll());
   }
 
   @On('warn')

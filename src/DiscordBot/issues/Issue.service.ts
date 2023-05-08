@@ -58,8 +58,22 @@ export class IssueService {
 
     url.search = params.toString();
 
-    const developers = await fetch(url);
+    const fetchDevs = await fetch(url);
 
-    return await developers.json();
+    const developers: User[] = await fetchDevs.json();
+
+    developers.forEach(async (developer) => {
+      const { id, username } = developer;
+
+      const devOnDiscord = await this.guildMemberService.findOrCreate({
+        id,
+        username,
+        discordId: null,
+      });
+
+      if (devOnDiscord.discordId) developer.discordId = devOnDiscord.discordId;
+    });
+
+    return developers;
   }
 }
