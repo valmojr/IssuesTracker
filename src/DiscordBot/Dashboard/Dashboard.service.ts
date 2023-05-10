@@ -14,15 +14,17 @@ export class DashboardService {
   ) {
     await ChannelWiper(channel);
 
-    issues.forEach(async (issue) =>
-      channel.send({
-        embeds: [
-          await this.embedGeneratorService.DashboardEmbedIssue(
-            issue,
-            developers,
-          ),
-        ],
-      }),
-    );
+    issues.forEach(async (issue) => {
+      if (issue.assignee) {
+        channel.send({
+          embeds: [
+            await this.embedGeneratorService.DashboardEmbedIssue(
+              issue,
+              developers,
+            ),
+          ],
+        });
+      }
+    });
   }
 }

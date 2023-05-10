@@ -5,13 +5,13 @@ import { DashboardService } from './Dashboard/Dashboard.service';
 import { TextChannel } from 'discord.js';
 import * as dotenv from 'dotenv';
 import { IssueService } from './issues/Issue.service';
-import { GuildMemberService } from 'src/GuildMember/GuildMember.service';
+import { PrivateTrackerService } from './PrivateTracker/PrivateTracker.service';
 
 @Injectable()
 export class DiscordBotService {
   constructor(
     private readonly dashboardService: DashboardService,
-    private readonly guildMemberService: GuildMemberService,
+    private readonly privateTrackerService: PrivateTrackerService,
     private readonly issueService: IssueService,
   ) {
     dotenv.config();
@@ -56,6 +56,14 @@ export class DiscordBotService {
         this.dashboardService.generator(dashboardChannel, issues, developers);
       },
     );
+
+    new CronService('*/20 * * * * *', async () => {
+      const issues = await this.issueService.fetchOpenIssues();
+
+      const developers = await this.issueService.fetchDevelopers();
+
+      this.privateTrackerService.generator(client, issues, developers);
+    });
   }
 
   @On('warn')

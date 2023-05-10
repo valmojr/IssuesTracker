@@ -5,9 +5,10 @@ import { DiscordBotConfigService } from './DiscordBotConfig.service';
 import { DashboardService } from './Dashboard/Dashboard.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GuildMemberService } from 'src/GuildMember/GuildMember.service';
-import { DatabaseService } from 'src/Database/Database.service';
 import { IssueService } from './issues/Issue.service';
 import { EmbedGeneratorService } from './Dashboard/IssueMessenger/EmbedGenerator.service';
+import { PrivateTrackerService } from './PrivateTracker/PrivateTracker.service';
+import { DatabaseService } from 'src/Database/Database.service';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EmbedGeneratorService } from './Dashboard/IssueMessenger/EmbedGenerator
     DiscordBotConfigService,
     DiscordBotService,
     DashboardService,
+    PrivateTrackerService,
     GuildMemberService,
     DatabaseService,
     IssueService,

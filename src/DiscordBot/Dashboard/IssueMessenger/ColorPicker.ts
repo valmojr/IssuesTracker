@@ -1,5 +1,5 @@
 import { ColorResolvable } from 'discord.js';
-import { Task } from './ParseBody';
+import { Task } from '../../../Util/ParseBody';
 
 export default (tasks: Task[]): ColorResolvable => {
   const totalTasks = tasks.length;
