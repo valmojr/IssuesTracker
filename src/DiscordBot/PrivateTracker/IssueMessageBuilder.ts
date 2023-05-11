@@ -21,7 +21,8 @@ export default async (dev: User, channel: DMChannel, issues: Issue[]) => {
     const labels = ParseLabel(issue);
 
     const due_on = new Date(issue?.milestone?.due_on);
-    const dueDate = due_on
+
+    const dueDate = issue?.milestone
       ? `Prazo: ${due_on.getDay()}/${MonthTranslator(due_on.getMonth())}\n`
       : '';
 
@@ -33,7 +34,7 @@ export default async (dev: User, channel: DMChannel, issues: Issue[]) => {
         translateLabelToMessage(labels),
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
-          dropButton(issue.id, dev.id),
+          dropButton(issue.id),
         ),
       ],
     });

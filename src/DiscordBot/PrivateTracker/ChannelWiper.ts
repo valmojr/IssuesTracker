@@ -1,7 +1,10 @@
 import { DMChannel } from 'discord.js';
 
 export default async (dmChannel: DMChannel) => {
-  const messages = await dmChannel.messages.fetch({ limit: 100 });
-
-  messages.forEach((message) => message.delete());
+  try {
+    const messages = await dmChannel.messages.fetch({ limit: 100 });
+    messages.each((message) => message.delete());
+  } catch (error) {
+    console.error('Error deleting messages in DM channel:', error);
+  }
 };

@@ -28,36 +28,19 @@ export class DiscordBotService {
       process.env.DISCORD_DEV_DASHBOARD_CHANNEL_ID,
     )) as TextChannel;
 
-    new CronService(
-      process.env.DISCORD_DASHBOARD_WEEKDAYS_INTERVAL.toString(),
-      async () => {
-        this.logger.log(
-          `refreshing dashboard on ${guild.name} - ${dashboardChannel.name}`,
-        );
+    new CronService(process.env.DISCORD_DASHBOARD_INTERVAL, async () => {
+      this.logger.log(
+        `refreshing dashboard on ${guild.name} - ${dashboardChannel.name}`,
+      );
 
-        const issues = await this.issueService.fetchOpenIssues();
+      const issues = await this.issueService.fetchOpenIssues();
 
-        const developers = await this.issueService.fetchDevelopers();
+      const developers = await this.issueService.fetchDevelopers();
 
-        this.dashboardService.generator(dashboardChannel, issues, developers);
-      },
-    );
-    new CronService(
-      process.env.DISCORD_DASHBOARD_WEEKEND_INTERVAL.toString(),
-      async () => {
-        this.logger.log(
-          `refreshing dashboard on ${guild.name} - ${dashboardChannel.name}`,
-        );
+      this.dashboardService.generator(dashboardChannel, issues, developers);
+    });
 
-        const issues = await this.issueService.fetchOpenIssues();
-
-        const developers = await this.issueService.fetchDevelopers();
-
-        this.dashboardService.generator(dashboardChannel, issues, developers);
-      },
-    );
-
-    new CronService('*/20 * * * * *', async () => {
+    new CronService(process.env.DISCORD_DASHBOARD_DIRECT_INTERVAL, async () => {
       const issues = await this.issueService.fetchOpenIssues();
 
       const developers = await this.issueService.fetchDevelopers();

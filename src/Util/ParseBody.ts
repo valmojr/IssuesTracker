@@ -11,7 +11,8 @@ export default {
       const isDone = task.startsWith('- [X]') || task.startsWith('- [x]');
       const cleanedTask = task
         .replace(/^- \[[xX]\] /, '')
-        .replace(/^- \[ \] /, '');
+        .replace(/^- \[ \] /, '')
+        .replace(/\r/g, '');
       return { id, task: cleanedTask, isDone };
     });
 
@@ -19,12 +20,12 @@ export default {
   },
 
   bodyGenerator: (tasks: Task[]) => {
-    const body = '';
+    let body = '';
 
     tasks.forEach((task) => {
       task.isDone
-        ? body.concat('- [x] ' + task.task + '\n')
-        : body.concat('- [ ] ' + task.task + '\n');
+        ? (body = body.concat('- [x] ' + task.task + '\r\n'))
+        : (body = body.concat('- [ ] ' + task.task + '\r\n'));
     });
 
     return body;

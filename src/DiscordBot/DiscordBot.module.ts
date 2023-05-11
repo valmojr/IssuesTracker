@@ -9,6 +9,7 @@ import { IssueService } from './issues/Issue.service';
 import { EmbedGeneratorService } from './Dashboard/IssueMessenger/EmbedGenerator.service';
 import { PrivateTrackerService } from './PrivateTracker/PrivateTracker.service';
 import { DatabaseService } from 'src/Database/Database.service';
+import { MessageComponentHandlerService } from './ComponentHandlers.service';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DatabaseService } from 'src/Database/Database.service';
     DiscordBotService,
     DashboardService,
     PrivateTrackerService,
+    MessageComponentHandlerService,
     GuildMemberService,
     DatabaseService,
     IssueService,

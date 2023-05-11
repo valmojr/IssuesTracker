@@ -46,6 +46,73 @@ export class IssueService {
     return await issues.json();
   }
 
+  public async fetchIssue(issueId): Promise<Issue> {
+    const { GITEA_URL, GITEA_REPO_OWNER, GITEA_REPO_NAME, GITEA_AUTH_TOKEN } =
+      process.env;
+    const url = new URL(
+      `http://${GITEA_URL}/api/v1/repos/${GITEA_REPO_OWNER}/${GITEA_REPO_NAME}/issues/${issueId}`,
+    );
+
+    const params = new URLSearchParams();
+    params.append('token', GITEA_AUTH_TOKEN);
+
+    url.search = params.toString();
+
+    const issue = await fetch(url);
+
+    return await issue.json();
+  }
+
+  public async updateIssue(issue: Issue): Promise<Issue> {
+    const { GITEA_URL, GITEA_REPO_OWNER, GITEA_REPO_NAME, GITEA_AUTH_TOKEN } =
+      process.env;
+    const url = new URL(
+      `http://${GITEA_URL}/api/v1/repos/${GITEA_REPO_OWNER}/${GITEA_REPO_NAME}/issues/${issue.id}`,
+    );
+
+    const params = new URLSearchParams();
+    params.append('token', GITEA_AUTH_TOKEN);
+
+    url.search = params.toString();
+
+    const body = JSON.stringify({ ...issue, milestone: null });
+
+    const options = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    };
+
+    const updatedIssue = await fetch(url, options);
+
+    return await updatedIssue.json();
+  }
+
+  public async updateIssueBody(issue: Issue): Promise<Issue> {
+    const { GITEA_URL, GITEA_REPO_OWNER, GITEA_REPO_NAME, GITEA_AUTH_TOKEN } =
+      process.env;
+    const url = new URL(
+      `http://${GITEA_URL}/api/v1/repos/${GITEA_REPO_OWNER}/${GITEA_REPO_NAME}/issues/${issue.id}`,
+    );
+
+    const params = new URLSearchParams();
+    params.append('token', GITEA_AUTH_TOKEN);
+
+    url.search = params.toString();
+
+    const body = JSON.stringify({ body: issue.body });
+
+    const options = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    };
+
+    const updatedIssue = await fetch(url, options);
+
+    return await updatedIssue.json();
+  }
+
   public async fetchDevelopers(): Promise<User[]> {
     const { GITEA_URL, GITEA_AUTH_TOKEN, GITEA_DEV_TEAM_ID } = process.env;
     const url = new URL(

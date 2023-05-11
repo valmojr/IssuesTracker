@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonStyle } from 'discord.js';
 
-export default (issueId: number, devId: number) =>
+export default (issueId: number) =>
   new ButtonBuilder()
-    .setLabel('EU DESISTO SENHOR')
+    .setLabel('🔔 DESISTO')
     .setStyle(ButtonStyle.Danger)
-    .setCustomId(`issueDrop/${issueId}/${devId}`);
+    .setCustomId(`issueDrop/${issueId}`);
