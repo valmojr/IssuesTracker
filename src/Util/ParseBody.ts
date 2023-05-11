@@ -20,9 +20,10 @@ export default {
   },
 
   bodyGenerator: (tasks: Task[]) => {
-    let body = '';
+    const filteredTasks = tasks.filter((task) => task.task.trim() !== '');
 
-    tasks.forEach((task) => {
+    let body = '';
+    filteredTasks.forEach((task) => {
       task.isDone
         ? (body = body.concat('- [x] ' + task.task + '\r\n'))
         : (body = body.concat('- [ ] ' + task.task + '\r\n'));

@@ -10,6 +10,8 @@ import { EmbedGeneratorService } from './Dashboard/IssueMessenger/EmbedGenerator
 import { PrivateTrackerService } from './PrivateTracker/PrivateTracker.service';
 import { DatabaseService } from 'src/Database/Database.service';
 import { MessageComponentHandlerService } from './ComponentHandlers.service';
+import { EmbedIssueBuilderService } from './PrivateTracker/EmbedIssueBuilder.service';
+import { IssueMessageSenderService } from './PrivateTracker/IssueMessageBuilder.service';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { MessageComponentHandlerService } from './ComponentHandlers.service';
     MessageComponentHandlerService,
     GuildMemberService,
     DatabaseService,
+    EmbedIssueBuilderService,
+    IssueMessageSenderService,
     IssueService,
     EmbedGeneratorService,
   ],

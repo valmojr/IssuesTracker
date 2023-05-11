@@ -1,7 +1,8 @@
 import { ButtonBuilder, ButtonStyle } from 'discord.js';
+import { Task } from 'src/Util/ParseBody';
 
-export default (issueId: number, taskId: number) =>
+export default (issueId: number, task: Task) =>
   new ButtonBuilder()
-    .setLabel('✅ concluir')
+    .setLabel(`✅ ${task.task}`)
     .setStyle(ButtonStyle.Success)
-    .setCustomId(`doneIssue/${issueId}/${taskId}`);
+    .setCustomId(`doneIssue/${issueId}/${task.id}`);

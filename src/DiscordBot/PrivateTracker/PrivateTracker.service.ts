@@ -2,12 +2,15 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Client } from 'discord.js';
 import { Issue, User } from 'src/Util/entities';
 import ChannelWiper from './ChannelWiper';
-import IssueMessageBuilder from './IssueMessageBuilder';
 import { GuildMemberService } from 'src/GuildMember/GuildMember.service';
+import { IssueMessageSenderService } from './IssueMessageBuilder.service';
 
 @Injectable()
 export class PrivateTrackerService {
-  constructor(private readonly guildMemberService: GuildMemberService) {}
+  constructor(
+    private readonly guildMemberService: GuildMemberService,
+    private readonly issueMessageBuilderService: IssueMessageSenderService,
+  ) {}
   private logger = new Logger(PrivateTrackerService.name);
 
   public async generator(client: Client, issues: Issue[], developers: User[]) {
@@ -26,7 +29,7 @@ export class PrivateTrackerService {
       const targetUserDMchannel = await targetUser.createDM();
       await ChannelWiper(targetUserDMchannel);
 
-      IssueMessageBuilder(dev, targetUserDMchannel, devIssues);
+      this.issueMessageBuilderService.sender(targetUserDMchannel, devIssues);
 
       await targetUser.deleteDM();
     });

@@ -1,12 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ActionRowBuilder, ButtonBuilder, TextChannel } from 'discord.js';
+import { TextChannel } from 'discord.js';
 import { Button, ButtonContext, ComponentParam, Context } from 'necord';
 import { IssueService } from './issues/Issue.service';
 import { GuildMemberService } from 'src/GuildMember/GuildMember.service';
 import { User } from 'src/Util/entities';
 import ParseBody from 'src/Util/ParseBody';
-import doButton from './Buttons/do.button';
-import doneButton from './Buttons/done.button';
 
 @Injectable()
 export class MessageComponentHandlerService {
@@ -86,7 +84,7 @@ export class MessageComponentHandlerService {
 
     issue.body = updatedBody;
 
-    console.log(await this.issueService.updateIssueBody(issue));
+    await this.issueService.updateIssueBody(issue);
 
     //await interaction.message.edit({
     //  content: `• ${task.task}`,
@@ -99,10 +97,9 @@ export class MessageComponentHandlerService {
     //  ],
     //});
 
-    console.log(
-      await interaction.channel.messages.fetch(interaction.message.id),
-    );
-
-    return interaction.reply(`Tarefa: "${task.task}" concluída`);
+    return interaction.reply({
+      content: `Tarefa: "${task.task}" concluída`,
+      ephemeral: true,
+    });
   }
 }

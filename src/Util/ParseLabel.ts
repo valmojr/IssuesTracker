@@ -1,9 +1,10 @@
+import { EmbedBuilder } from 'discord.js';
 import { Issue } from 'src/Util/entities';
 
 interface Label {
-  asset: string;
-  priority: string;
-  status: string;
+  asset?: string;
+  priority?: string;
+  status?: string;
 }
 
 export default ({ labels }: Issue) => {
@@ -46,4 +47,27 @@ export const translateLabelToMessage = (labels: Label) => {
   }
 
   return message;
+};
+
+export const translateLabelToFields = (labels: Label, embed: EmbedBuilder) => {
+  if (labels.asset !== '') {
+    embed.addFields({
+      name: 'Asset',
+      value: labels.asset,
+    });
+  }
+
+  if (labels.priority !== '') {
+    embed.addFields({
+      name: 'Prioridade',
+      value: labels.priority,
+    });
+  }
+
+  if (labels.status) {
+    embed.addFields({
+      name: 'Status',
+      value: labels.status,
+    });
+  }
 };
