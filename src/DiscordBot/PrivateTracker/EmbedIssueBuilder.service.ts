@@ -21,21 +21,27 @@ export class EmbedIssueBuilderService {
 
     translateLabelToFields(labels, embedIssue);
 
-    const assignees =
-      issue.assignees?.length > 1
-        ? {
-            name: 'Responsáveis',
-            value: `Você, ${issue.assignees
-              .map(
-                async (assignees) =>
-                  `<@${
-                    (await this.guildMemberService.findById(assignees.id))
-                      .discordId
-                  }>`,
-              )
-              .join(', ')}`,
-          }
-        : { name: 'Responsável', value: 'Você' };
+    let assignees: { name: string; value: string };
+
+    if (issue.assignees?.length == 1) {
+      assignees = { name: 'Responsável', value: 'você' };
+    } else {
+      assignees = {
+        name: 'Responsáveis',
+        value: `${(
+          await Promise.all(
+            issue.assignees.map(
+              async (assignees) =>
+                `<@${
+                  (
+                    await this.guildMemberService.findById(assignees.id)
+                  ).discordId
+                }>`,
+            ),
+          )
+        ).join(', ')}`,
+      };
+    }
 
     embedIssue.addFields(assignees);
 

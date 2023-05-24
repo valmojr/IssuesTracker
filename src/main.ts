@@ -7,5 +7,9 @@ async function bootstrap() {
   await app.listen(3000);
 }
 
+process.on('unhandledRejection', (error) => {
+  console.error('Unhandled promise rejection:', error);
+});
+
 envConfig();
 bootstrap();

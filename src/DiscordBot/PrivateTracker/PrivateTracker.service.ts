@@ -23,7 +23,7 @@ export class PrivateTrackerService {
 
       dev.discordId = (
         await this.guildMemberService.findById(dev.id)
-      ).discordId;
+      )?.discordId;
 
       const targetUser = await client.users.fetch(dev.discordId); // erro aqui
       const targetUserDMchannel = await targetUser.createDM();

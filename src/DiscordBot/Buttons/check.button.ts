@@ -6,6 +6,7 @@ export default (issueId: number) => {
   return new ButtonBuilder()
     .setLabel('👀 INTEL')
     .setStyle(ButtonStyle.Link)
+    .setDisabled(false)
     .setURL(
       `http://${GITEA_URL}/${GITEA_REPO_OWNER}/${GITEA_REPO_NAME}/issues/${issueId}`,
     );

@@ -36,7 +36,7 @@ export class EmbedGeneratorService {
         inline: true,
       },
       {
-        name: assignees.length > 1 ? 'Responsáveis' : 'Responsável',
+        name: 'Responsável',
         value: assignees,
         inline: true,
       },

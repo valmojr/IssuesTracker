@@ -49,6 +49,8 @@ export class GuildMemberService {
     if (!!findUser) {
       return findUser;
     } else {
+      console.log(guildMember);
+      if (!guildMember.username) throw new Error('no username provided');
       return this.create(guildMember);
     }
   }

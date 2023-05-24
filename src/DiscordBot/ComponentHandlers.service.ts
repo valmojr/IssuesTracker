@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TextChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, TextChannel } from 'discord.js';
 import { Button, ButtonContext, ComponentParam, Context } from 'necord';
 import { IssueService } from './issues/Issue.service';
 import { GuildMemberService } from 'src/GuildMember/GuildMember.service';
 import { User } from 'src/Util/entities';
 import ParseBody from 'src/Util/ParseBody';
+import doButton from './Buttons/do.button';
 
 @Injectable()
 export class MessageComponentHandlerService {
@@ -46,8 +47,6 @@ export class MessageComponentHandlerService {
 
     const updatedissue = await this.issueService.updateIssue(issue);
 
-    console.log(updatedissue);
-
     channel.send(
       `@everyone O Sr. <@${interaction.user.id}> desistiu de fazer ${
         (await issue).title
@@ -86,16 +85,14 @@ export class MessageComponentHandlerService {
 
     await this.issueService.updateIssueBody(issue);
 
-    //await interaction.message.edit({
-    //  content: `• ${task.task}`,
-    //  components: [
-    //    new ActionRowBuilder<ButtonBuilder>().addComponents(
-    //      task.isDone
-    //        ? doneButton(issue.id, task.id)
-    //        : doButton(issue.id, task.id),
-    //    ),
-    //  ],
-    //});
+    await interaction.message.edit({
+      content: `• ${task.task}`,
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          task.isDone ? null : doButton(issue.id, task.id),
+        ),
+      ],
+    });
 
     return interaction.reply({
       content: `Tarefa: "${task.task}" concluída`,
