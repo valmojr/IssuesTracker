@@ -47,6 +47,8 @@ export class MessageComponentHandlerService {
 
     const updatedissue = await this.issueService.updateIssue(issue);
 
+    await this.logger.log(`Issue Updated: ${updatedissue.title}`);
+
     channel.send(
       `@everyone O Sr. <@${interaction.user.id}> desistiu de fazer ${
         (await issue).title
